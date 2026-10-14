@@ -75,6 +75,17 @@ npx ng build --base-href ./
 
 Netlify Drop é o caminho mais rápido: arraste a pasta `dist/cameras-p2p/browser` em https://app.netlify.com/drop.
 
+Este repositório já publica no GitHub Pages com domínio próprio (`cameras-p2p.ghabryelhenrique.com.br`):
+
+```bash
+npm run deploy   # ng deploy: build com base-href ./ + CNAME, push na branch gh-pages
+```
+
+Não passe `--base-href https://<usuário>.github.io/...`: com domínio próprio, o GitHub redireciona o `github.io`
+para o domínio, e o navegador bloqueia os scripts (módulos) por CORS. O `CNAME` é gerado a cada deploy; sem ele,
+o push substitui a branch e o domínio próprio cai. No GitHub, em **Settings → Pages**, marque
+**Enforce HTTPS** para a câmera funcionar.
+
 ## Limites e dicas
 
 - **Upload do host:** cada convidado recebe o programa de volta (~1,2 Mbps). Com 4 a 6 convidados, uma conexão

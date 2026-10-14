@@ -10,7 +10,11 @@ para o YouTube. Visão de produto e uso: [README.md](README.md).
 npm start                      # ng serve → http://localhost:4200
 npx ng build                   # build de produção (precisa passar sem erros/avisos)
 npx ng build --base-href ./    # build para publicar em hospedagem estática
+npm run deploy                 # ng deploy → GitHub Pages (gh-pages), base-href ./ + CNAME do domínio próprio
 ```
+
+O target `deploy` do `angular.json` fixa `baseHref: ./` e `cname`. Nunca use base href absoluto
+`https://…github.io/…`: o GitHub redireciona para o domínio próprio e os módulos JS são bloqueados por CORS.
 
 Não há testes unitários (o projeto foi criado com `--skip-tests`). Para validar, rode o fluxo de ponta a ponta
 (seção **Verificação**).

@@ -92,6 +92,13 @@
             }
           },
           "defaultConfiguration": "development"
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "baseHref": "./",
+            "cname": "cameras-p2p.ghabryelhenrique.com.br"
+          }
         }
       }
     }
