@@ -16,7 +16,8 @@ import { SrcObjectDirective } from '../../shared/src-object.directive';
 @Component({
   selector: 'app-output',
   imports: [FormsModule, SrcObjectDirective],
-  host: { class: 'output-host' },
+  // Fechar/recarregar a fonte no OBS avisa o estúdio na hora, em vez de esperar o timeout do ICE.
+  host: { class: 'output-host', '(window:beforeunload)': 'disconnect()' },
   template: `
     <video
       #video
@@ -88,6 +89,10 @@ export class Output implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.disconnect();
+  }
+
+  disconnect() {
     this.destroyed = true;
     clearInterval(this.timer);
     clearTimeout(this.retryTimer);
@@ -108,7 +113,7 @@ export class Output implements OnInit, OnDestroy {
         opener && !opener.closed
           ? 'Aguardando o estúdio iniciar…'
           : 'Abra esta janela pelo botão "Abrir janela de Saída" no estúdio. ' +
-              'No OBS, use o link da Saída em Ajustes → OBS.',
+              'No OBS, use o "Link da Saída para o OBS" (aba Ajustes do estúdio).',
       );
     }
     this.show(program ?? null);

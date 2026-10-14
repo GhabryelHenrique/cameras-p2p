@@ -2,10 +2,10 @@
 
 Estúdio de live estilo StreamYard **sem backend**: seu PC é o estúdio. Os convidados entram por um link e
 enviam a webcam **direto para você** (WebRTC P2P). Você escolhe quem está ao vivo, o layout, banners e logo.
-Uma janela de **Saída** limpa (1920x1080) é capturada pelo OBS e transmitida no YouTube.
+A **Saída** limpa (1920x1080) entra no OBS como fonte Navegador e vai para o YouTube.
 
 ```
-Convidado ──webcam/mic──▶ Seu PC (/studio) ──▶ canvas 1920x1080 + mix de áudio ──▶ janela Saída ──▶ OBS ──▶ YouTube
+Convidado ──webcam/mic──▶ Seu PC (/studio) ──▶ canvas 1920x1080 + mix de áudio ──▶ Saída (/output/<id>) ──▶ OBS ──▶ YouTube
           ◀──programa + áudio (sem a própria voz)──┘
 ```
 
@@ -33,21 +33,35 @@ Para testar sozinho: abra o estúdio em uma janela e o link de convite numa jane
    - **Chat:** conversa com os convidados. "Exibir na tela" transforma uma mensagem em banner.
    - **Banners:** crie textos e mostre um por vez. Também tem um letreiro rolante.
    - **Marca:** cor de destaque, cor/imagem de fundo, logo e texto de espera.
-   - **Ajustes:** adicione sua câmera, compartilhe a tela, ligue o retorno de áudio, configure TURN e gere um novo link.
-5. **Abrir janela de Saída** → leve para o OBS (abaixo).
+   - **Ajustes:** adicione sua câmera, compartilhe a tela, ligue o retorno de áudio, configure TURN, gere um novo link
+     e copie o **link da Saída para o OBS**.
+5. Leve a Saída para o OBS (abaixo).
 
 ## OBS → YouTube
 
-1. Deixe a janela de **Saída** aberta. Ela pode ficar atrás de outras, mas **não minimize**.
-   Mantenha também a aba do estúdio aberta, de preferência em uma janela própria.
-2. OBS: **Fontes → + → Captura de janela** → `[chrome.exe]: Saída — Estúdio P2P`, método *Windows 10 (1903+)*.
-3. Áudio:
-   - **Simples:** **Fontes → + → Captura de áudio de aplicativo** na janela de Saída. Se o *retorno* (você ouvindo
-     os convidados) estiver ligado, desligue-o ou use fones, para o áudio não duplicar.
-   - **Recomendado:** instale o [VB-Cable](https://vb-audio.com/Cable/). Na janela de Saída, passe o mouse e escolha
-     *Áudio do programa → CABLE Input*. No OBS, adicione **Captura de entrada de áudio → CABLE Output**.
-     Assim você ouve os convidados nos fones e a live recebe só o programa.
+### Recomendado: fonte Navegador
+
+1. No estúdio, abra **Ajustes** e copie o **Link da Saída para o OBS** (`…/#/output/cp2p-…`).
+2. OBS: **Fontes → + → Navegador**, cole o link, largura **1920**, altura **1080**.
+3. Marque **Controlar áudio pelo OBS**. O áudio do programa (Opus estéreo, 256 kbps) entra direto no mixer do
+   OBS, sem cabo virtual e sem misturar com o seu retorno.
 4. **Configurações → Transmissão → YouTube**, conecte a conta e clique em **Iniciar transmissão**.
+
+Mantenha a aba do estúdio aberta. A fonte do OBS recebe o programa por WebRTC (na mesma máquina, sem passar pela
+internet) e **reconecta sozinha** se o estúdio for recarregado ou aberto depois do OBS. O link só muda se você
+gerar um novo ID de estúdio.
+
+> O `http://localhost:4200/#/output` **sem o ID** não funciona no OBS: a fonte Navegador roda num navegador
+> separado, sem acesso à aba do estúdio. Ela precisa do ID para encontrar o estúdio.
+
+### Alternativa: captura de janela
+
+1. Clique em **Abrir janela de Saída** (topo do estúdio) e deixe-a aberta. Ela pode ficar atrás de outras, mas
+   **não minimize**.
+2. OBS: **Fontes → + → Captura de janela** → `[chrome.exe]: Saída — Estúdio P2P`, método *Windows 10 (1903+)*.
+3. Áudio: **Fontes → + → Captura de áudio de aplicativo** na janela de Saída, ou mande o áudio para um
+   [VB-Cable](https://vb-audio.com/Cable/) no seletor da própria janela (passe o mouse) e capture
+   **CABLE Output** no OBS. Se o *retorno* estiver ligado, use fones para o áudio não duplicar.
 
 ## Publicar o site (grátis, continua serverless)
 
